@@ -7,6 +7,59 @@ const page = document.body.dataset.page;
 let products, posts, users, orders, stickers;
 let tab = 'p', editId = 0, q = '', cat = 'Все';
 
+
+const extraProducts = [
+  { id: 9, name: 'Флэт уайт', cat: 'Кофе', price: 270, desc: 'Двойной эспрессо с тонким слоем молочной микропены', image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=900&q=85' },
+  { id: 10, name: 'Раф ванильный', cat: 'Кофе', price: 290, desc: 'Нежный сливочный кофе с натуральной ванилью', image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=900&q=85' },
+  { id: 11, name: 'Мокка', cat: 'Кофе', price: 280, desc: 'Эспрессо, шоколад и молоко', image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=900&q=85' },
+  { id: 12, name: 'Карамельный латте', cat: 'Кофе', price: 310, desc: 'Латте с мягкой карамельной сладостью', image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=900&q=85' },
+  { id: 13, name: 'Матча латте', cat: 'Чай', price: 290, desc: 'Японский зелёный чай матча с молоком', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=900&q=85' },
+  { id: 14, name: 'Чай масала', cat: 'Чай', price: 220, desc: 'Пряный чёрный чай с молоком и специями', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=900&q=85' },
+  { id: 15, name: 'Облепиховый чай', cat: 'Чай', price: 240, desc: 'Яркий согревающий чай с облепихой', image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=900&q=85' },
+  { id: 16, name: 'Матча на кокосовом', cat: 'Чай', price: 320, desc: 'Матча с нежным кокосовым напитком', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=900&q=85' },
+  { id: 17, name: 'Брауни', cat: 'Десерты', price: 190, desc: 'Шоколадный десерт с насыщенным вкусом какао', image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=85' },
+  { id: 18, name: 'Морковный торт', cat: 'Десерты', price: 280, desc: 'Пряный бисквит с кремом', image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85' },
+  { id: 19, name: 'Маффин шоколадный', cat: 'Десерты', price: 160, desc: 'Мягкий маффин с кусочками шоколада', image: 'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?auto=format&fit=crop&w=900&q=85' },
+  { id: 20, name: 'Тирамису', cat: 'Десерты', price: 300, desc: 'Итальянский десерт с кофе и маскарпоне', image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=900&q=85' },
+  { id: 21, name: 'Сэндвич с курицей', cat: 'Закуски', price: 320, desc: 'Тостовый хлеб, курица и свежие овощи', image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=900&q=85' },
+  { id: 22, name: 'Круассан с миндалём', cat: 'Выпечка', price: 210, desc: 'Слоёный круассан с миндальным кремом', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=85' },
+  { id: 23, name: 'Синнабон', cat: 'Выпечка', price: 230, desc: 'Булочка с корицей и сливочной глазурью', image: 'https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=900&q=85' },
+  { id: 24, name: 'Лимонный тарт', cat: 'Десерты', price: 260, desc: 'Песочная основа и нежный лимонный крем', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=85' }
+];
+
+const productImages = {
+  'Эспрессо': 'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=900&q=85',
+  'Американо': 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=85',
+  'Капучино': 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=85',
+  'Латте': 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=900&q=85',
+  'Чёрный чай': 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=900&q=85',
+  'Зелёный чай': 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=900&q=85',
+  'Круассан': 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=85',
+  'Чизкейк': 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=900&q=85'
+};
+
+function ensureCatalogProducts() {
+  products = get('products', []);
+  const defaults = [
+    { id: 1, name: 'Эспрессо', cat: 'Кофе', price: 150, desc: 'Крепкий классический шот' },
+    { id: 2, name: 'Американо', cat: 'Кофе', price: 170, desc: 'Эспрессо с горячей водой' },
+    { id: 3, name: 'Капучино', cat: 'Кофе', price: 230, desc: 'Эспрессо и молочная пена' },
+    { id: 4, name: 'Латте', cat: 'Кофе', price: 250, desc: 'Нежный кофе с молоком' },
+    { id: 5, name: 'Чёрный чай', cat: 'Чай', price: 140, desc: 'Классический чай с лимоном' },
+    { id: 6, name: 'Зелёный чай', cat: 'Чай', price: 140, desc: 'Лёгкий и свежий' },
+    { id: 7, name: 'Круассан', cat: 'Десерты', price: 130, desc: 'Свежая выпечка' },
+    { id: 8, name: 'Чизкейк', cat: 'Десерты', price: 260, desc: 'Классический чизкейк' }
+  ];
+  const allDefaults = defaults.concat(extraProducts);
+  const byId = new Map(products.map(p => [p.id, p]));
+  allDefaults.forEach(p => {
+    if (!byId.has(p.id)) products.push(p);
+    else if (p.image || productImages[p.name]) byId.get(p.id).image = p.image || productImages[p.name];
+  });
+  products = products.map(p => ({ ...p, image: p.image || productImages[p.name] || '' }));
+  set('products', products);
+}
+
 function seed() {
   if (get('seeded', 0)) return;
   const ps = [
@@ -59,7 +112,12 @@ function deny() {
   $('#app').innerHTML = '<h1>Доступ закрыт</h1><p>Войдите как администратор.</p><a class="btn" href="login.html">Войти</a>';
 }
 function card(p) {
-  return `<div class="card"><h3>${esc(p.name)}</h3><span class="muted">${esc(p.cat)}</span><span>${esc(p.desc)}</span><span class="price">${money(p.price)}</span><button class="btn" data-act="add" data-id="${p.id}">В корзину</button></div>`;
+  const image = p.image || productImages[p.name] || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=85';
+  return `<article class="card product-card">
+    <div class="product-photo"><img src="${esc(image)}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=85'"></div>
+    <div class="product-info"><span class="muted">${esc(p.cat)}</span><h3>${esc(p.name)}</h3>
+    <p>${esc(p.desc || '')}</p><div class="product-bottom"><span class="price">${money(p.price)}</span><button class="btn" data-act="add" data-id="${p.id}">В корзину</button></div></div>
+  </article>`;
 }
 function home() {
   $('#app').innerHTML = `<div class="hero"><h1>Кофейня</h1><p>Свежий кофе, чай и десерты каждый день.</p><a class="btn" href="catalog.html">Открыть каталог</a> <a class="btn alt" href="blog.html">Читать блог</a></div><h2>Популярное</h2><div class="grid">${products.slice(0, 4).map(card).join('')}</div>`;
@@ -115,7 +173,7 @@ function admin() {
   let h = '<h1>Панель администратора</h1><div class="tabs">' + T.map(t => `<button class="tab ${tab === t[0] ? 'on' : ''}" data-act="tab" data-id="${t[0]}">${t[1]}</button>`).join('') + '</div>';
   if (tab === 'p') {
     const e = products.find(p => p.id === editId) || { name: '', cat: '', price: '', desc: '' };
-    h += `<form class="stack" data-form="product"><h2>${editId ? 'Изменить товар' : 'Новый товар'}</h2><input name="name" placeholder="Название" value="${esc(e.name)}" required><input name="cat" placeholder="Категория" value="${esc(e.cat)}" required><input name="price" type="number" min="1" placeholder="Цена" value="${esc(e.price)}" required><input name="desc" placeholder="Описание" value="${esc(e.desc)}"><button class="btn">${editId ? 'Сохранить' : 'Добавить'}</button></form><h2>Список товаров</h2>` + products.map(p => `<div class="row"><div><b>${esc(p.name)}</b> <span class="muted">${esc(p.cat)}</span></div><b>${money(p.price)}</b><div><button class="btn alt" data-act="pedit" data-id="${p.id}">Изменить</button> <button class="btn red" data-act="pdel" data-id="${p.id}">Удалить</button></div></div>`).join('');
+    h += `<form class="stack" data-form="product"><h2>${editId ? 'Изменить товар' : 'Новый товар'}</h2><input name="name" placeholder="Название" value="${esc(e.name)}" required><input name="cat" placeholder="Категория" value="${esc(e.cat)}" required><input name="price" type="number" min="1" placeholder="Цена" value="${esc(e.price)}" required><input name="desc" placeholder="Описание" value="${esc(e.desc)}"><input name="image" type="url" placeholder="Ссылка на изображение (https://...)" value="${esc(e.image || '')}"><button class="btn">${editId ? 'Сохранить' : 'Добавить'}</button></form><h2>Список товаров</h2>` + products.map(p => `<div class="row"><div><b>${esc(p.name)}</b> <span class="muted">${esc(p.cat)}</span></div><b>${money(p.price)}</b><div><button class="btn alt" data-act="pedit" data-id="${p.id}">Изменить</button> <button class="btn red" data-act="pdel" data-id="${p.id}">Удалить</button></div></div>`).join('');
   }
   if (tab === 'b') {
     h += `<form class="stack" data-form="post"><h2>Новая запись</h2><input name="title" placeholder="Заголовок" required><textarea name="text" placeholder="Текст" required></textarea><button class="btn">Опубликовать</button></form><h2>Записи</h2>` + posts.map(p => `<div class="row"><b>${esc(p.title)}</b><button class="btn red" data-act="postdel" data-id="${p.id}">Удалить</button></div>`).join('');
@@ -199,7 +257,7 @@ const forms = {
     location.href = 'catalog.html';
   },
   product(f) {
-    const d = { name: f.name.value.trim(), cat: f.cat.value.trim(), price: +f.price.value, desc: f.desc.value.trim() };
+    const d = { name: f.name.value.trim(), cat: f.cat.value.trim(), price: +f.price.value, desc: f.desc.value.trim(), image: f.image.value.trim() };
     if (editId) products = products.map(p => p.id === editId ? Object.assign(p, d) : p);
     else products.push(Object.assign({ id: nextId(products) }, d));
     set('products', products); editId = 0; admin();
@@ -242,4 +300,5 @@ document.addEventListener('pointerup', () => {
   drag = null;
 });
 seed();
+ensureCatalogProducts();
 refresh();
